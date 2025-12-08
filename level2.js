@@ -2,7 +2,7 @@ const { GetInput } = require('./helpers');
 const EnableConsole = false;
 const Part = 2;
 
-inputs = GetInput("input2.txt", data => {
+let inputs = GetInput("input2.txt", data => {
     return data.split(",").map(function(str){ return {Start: parseInt(str.trim().split("-")[0]), End: parseInt(str.trim().split("-")[1]) }; });
 });
 

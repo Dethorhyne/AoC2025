@@ -2,7 +2,7 @@ const { GetInput } = require('./helpers');
 const EnableConsole = false;
 const Part = 2;
 
-tachfold = GetInput("input7.txt", data => {
+let tachfold = GetInput("input7.txt", data => {
     let output = [];
 
     let rows = data.replace(/\r/g, '').split('\n');

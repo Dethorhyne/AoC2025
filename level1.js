@@ -1,7 +1,7 @@
 const { GetInput } = require('./helpers');
 const EnableConsole = false;
 
-inputs = GetInput("input1.txt", data => {
+let inputs = GetInput("input1.txt", data => {
     return data.replace(/\r/g, '').split('\n');
 });
 

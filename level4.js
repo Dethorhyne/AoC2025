@@ -2,7 +2,7 @@ const { GetInput } = require('./helpers');
 const EnableConsole = false;
 const Part = 2;
 
-grid = GetInput("input4.txt", data => {
+let grid = GetInput("input4.txt", data => {
     let output = [];
     let rows = data.replace(/\r/g, '').split('\n');
 

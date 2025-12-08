@@ -2,7 +2,7 @@ const { GetInput } = require('./helpers');
 const EnableConsole = false;
 const Part = 2;
 
-IngData = GetInput("input5.txt", data => {
+let IngData = GetInput("input5.txt", data => {
     let output = {
         Ranges: [],
         Ingredients: []

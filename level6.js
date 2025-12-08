@@ -2,7 +2,7 @@ const { GetInput } = require('./helpers');
 const EnableConsole = false;
 const Part = 2;
 
-collection = GetInput("input6.txt", data => {
+let collection = GetInput("input6.txt", data => {
     let output = {
         Rows : [],
         Operators: []
