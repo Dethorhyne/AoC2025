@@ -25,7 +25,7 @@ let dots = GetInput("input9.txt", data => {
 
     let rows = data.replace(/\r/g, '').split('\n');
 
-    previousLine = {
+    let previousLine = {
         Col: rows[rows.length-1].trim().split(",")[0],
         Row: rows[rows.length-1].trim().split(",")[1]
     }
@@ -121,10 +121,8 @@ Object.keys(dots.Matrix).forEach(col => {
                 
                 if(area != null && area > MaxAreaP2)
                 {
-                    let cap = checkDotsInArea(dots, {Col: col, Row: row},{Col: col2, Row: row2}, area, true);
-                    if(cap !== false)
+                    if(checkDotsAndLinesInArea(dots, {Col: col, Row: row},{Col: col2, Row: row2}, area, true))
                     {
-                        CheckCaps(cap);
                         continue;
                     }
                     
@@ -133,16 +131,6 @@ Object.keys(dots.Matrix).forEach(col => {
                 }
             }
         });
-
-        caps.Col = {
-            Min: dots.Min.y * 1,
-            Max: dots.Max.y * 1
-        };
-        caps.Row = {
-            Min: dots.Min.x * 1,
-            Max: dots.Max.x * 1
-        }
-
     }
 });
 
@@ -172,7 +160,7 @@ function GetDistance(start, end)
     return end - start + 1;
 }
 
-function checkDotsInArea(dots, coord1, coord2, area = null)
+function checkDotsAndLinesInArea(dots, coord1, coord2, area = null)
 {
     let topLeft = 
     {
@@ -197,7 +185,7 @@ function checkDotsInArea(dots, coord1, coord2, area = null)
             if(row <= topLeft.Row) continue;
             if(row >= bottomRight.Row) break;
             if(dots.Matrix[col] && dots.Matrix[col].includes(row))
-                return {Type: "Dot", Col: col, Row: row, dotA: coord1, dotB: coord2};
+                return true;
 
             if(dots.Lines.Row[row] !== undefined)
             {
@@ -206,7 +194,7 @@ function checkDotsInArea(dots, coord1, coord2, area = null)
                     let line = dots.Lines.Row[row][k];
                     if(line.Start < bottomRight.Col && line.End > topLeft.Col)
                     {
-                        return {Type: "Line", Line: line, Row: row, Orientation: 'Row', dotA: coord1, dotB: coord2};
+                        return true;
                     }
                 }
             }
@@ -218,7 +206,7 @@ function checkDotsInArea(dots, coord1, coord2, area = null)
                 let line = dots.Lines.Col[col][k];
                 if(line.Start < bottomRight.Row && line.End > topLeft.Row)
                 {
-                    return {Type: "Line", Line: line, Col: col, Orientation: 'Col', dotA: coord1, dotB: coord2};
+                    return true;
                 }
             }
         }
@@ -226,58 +214,6 @@ function checkDotsInArea(dots, coord1, coord2, area = null)
     if(EnableConsole) console.log(`(${topLeft.Col},${topLeft.Row}) x (${bottomRight.Col},${bottomRight.Row}) = ${area == null ? 0 : area}`);
     
     return false;
-}
-
-function CheckCaps(line)
-{
-    let col = line.dotA.Col;
-    let col2 = line.dotB.Col;
-    let row = line.dotA.Row;
-    let row2 = line.dotB.Row;
-
-    if(line.Type == "Dot")
-    {
-        if(line.Col > caps.Col.Min && line.Col < caps.Col.Max)
-        {
-            if(col > col2)
-                caps.Col.Max = line.Col;
-            else
-                caps.Col.Min = line.Col;
-        }
-        if(line.Row > caps.Row.Min && line.Row < caps.Row.Max)
-        {
-            if(row > row2)
-                caps.Row.Max = line.Row;
-            else        
-                caps.Row.Min = line.Row;
-        }
-    }
-
-    if(line.Type == "Line")
-    {
-        if(line.Orientation == 'Row')
-        {
-            if(line.Row > caps.Row.Min && line.Row < caps.Row.Max)
-            {
-                if(row > row2)
-                    caps.Row.Max = line.Row;
-                else        
-                    caps.Row.Min = line.Row;
-            }
-        }
-        if(line.Orientation == 'Col')
-        {
-            if(line.Col > caps.Col.Min && line.Col < caps.Col.Max)
-            {
-                if(col > col2)
-                    caps.Col.Max = line.Col;
-                else
-                    caps.Col.Min = line.Col;
-            }
-        }
-    }
-
-    return true;
 }
 
 console.log(`Max P1 Area: ${MaxAreaP1}`);
